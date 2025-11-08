@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-const { body, validationResult } = require("express-validator");
+import { body, validationResult } from 'express-validator';
 
 import { authService } from '../services/auth.service';
 import { AuthenticatedRequest } from '../middleware/auth';
