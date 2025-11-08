@@ -1,8 +1,9 @@
 services:
-  - type: static
+  # Frontend
+  - type: static_site
     name: ai-code-assistant-frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
     routes:
       - type: rewrite
         source: /*
