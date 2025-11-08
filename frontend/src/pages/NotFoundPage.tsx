@@ -36,7 +36,7 @@ const NotFoundPage: React.FC = () => {
                         <Home size={20} />
                         Go to Home Page
                     </button>
-                    
+
                     <button
                         onClick={handleGoBack}
                         className="w-full flex items-center justify-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
@@ -49,8 +49,8 @@ const NotFoundPage: React.FC = () => {
                 <div className="mt-8 text-sm text-gray-500 dark:text-gray-400">
                     <p>
                         If you think this is a mistake, please{' '}
-                        <a 
-                            href="/" 
+                        <a
+                            href="/"
                             className="text-blue-600 dark:text-blue-400 hover:underline"
                         >
                             contact support
