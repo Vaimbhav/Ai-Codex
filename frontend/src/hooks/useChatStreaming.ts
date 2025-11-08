@@ -57,8 +57,11 @@ export const useChatStreaming = ({ sessionId, onMessageComplete, onError }: UseC
                 headers['Authorization'] = `Bearer ${token}`;
             }
 
+            // Get the API URL from environment
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
             // Make API request to backend
-            const response = await fetch('/api/chat/stream', {
+            const response = await fetch(`${API_URL}/chat/stream`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({

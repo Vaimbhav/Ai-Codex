@@ -47,7 +47,10 @@ class ChatService {
             headers['Authorization'] = `Bearer ${token}`;
         }
 
-        const response = await fetch('http://localhost:3001/api/chat/stream', {
+        // Get the API URL from environment
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
+        const response = await fetch(`${API_URL}/chat/stream`, {
             method: 'POST',
             headers,
             body: JSON.stringify({ message, apiKey, sessionId, useContext }),
