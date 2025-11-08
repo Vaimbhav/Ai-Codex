@@ -51,6 +51,10 @@ app.get('/health', (_req: Request, res: Response) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
+        environment: process.env.NODE_ENV,
+        corsOrigin: process.env.CORS_ORIGIN,
+        mongoUri: process.env.MONGODB_URI ? 'configured' : 'not configured',
+        jwtSecret: process.env.JWT_SECRET ? 'configured' : 'not configured',
     });
 });
 

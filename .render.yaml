@@ -1,4 +1,7 @@
 services:
+  # ===========================
+  # Backend Service (Node + TS)
+  # ===========================
   - type: web
     name: ai-codex-backend
     runtime: node
@@ -17,3 +20,32 @@ services:
         sync: false
       - key: GEMINI_API_KEY
         sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CORS_ORIGIN
+        value: https://ai-codex-frontend.onrender.com
+
+  # ===========================
+  # Frontend Service (Vite + React)
+  # ===========================
+  - type: web
+    name: ai-codex-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://ai-codex-0dwj.onrender.com/api  # your live backend URL
+
+    # Ensure React routing works (SPA fallback)
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

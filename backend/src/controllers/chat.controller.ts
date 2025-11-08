@@ -82,6 +82,15 @@ export const chat = async (req: AuthenticatedRequest, res: Response) => {
         res.json({ success: true, response });
     } catch (error) {
         logger.error('Error in chat:', error);
+        if (error instanceof Error) {
+            if (error.message.includes('API_KEY_INVALID')) {
+                return res.status(401).json({ error: 'Invalid Gemini API key. Please check your API key.' });
+            } else if (error.message.includes('QUOTA_EXCEEDED')) {
+                return res.status(429).json({ error: 'Gemini API quota exceeded. Please try again later.' });
+            } else if (error.message.includes('not initialized')) {
+                return res.status(400).json({ error: 'Gemini API not initialized. Please provide a valid API key.' });
+            }
+        }
         return res.status(500).json({ error: 'Failed to generate response' });
     }
 };
@@ -148,6 +157,15 @@ export const chatStream = async (req: AuthenticatedRequest, res: Response) => {
     } catch (error) {
         logger.error('Error in streaming chat:', error);
         if (!res.headersSent) {
+            if (error instanceof Error) {
+                if (error.message.includes('API_KEY_INVALID')) {
+                    return res.status(401).json({ error: 'Invalid Gemini API key. Please check your API key.' });
+                } else if (error.message.includes('QUOTA_EXCEEDED')) {
+                    return res.status(429).json({ error: 'Gemini API quota exceeded. Please try again later.' });
+                } else if (error.message.includes('not initialized')) {
+                    return res.status(400).json({ error: 'Gemini API not initialized. Please provide a valid API key.' });
+                }
+            }
             return res.status(500).json({ error: 'Failed to generate streaming response' });
         }
     }
@@ -295,13 +313,17 @@ export const setActiveChatSession = async (req: AuthenticatedRequest, res: Respo
 export const addMessageToChatSession = async (req: AuthenticatedRequest, res: Response) => {
     try {
         if (!req.user) {
+            logger.error('addMessageToChatSession: User not authenticated');
             return res.status(401).json({ success: false, error: 'Authentication required' });
         }
 
         const { sessionId } = req.params;
         const { content, role } = req.body;
 
+        logger.info(`addMessageToChatSession: sessionId=${sessionId}, role=${role}, contentLength=${content?.length || 0}, userId=${getUserId(req)}`);
+
         if (!content || !role) {
+            logger.error('addMessageToChatSession: Missing content or role');
             return res.status(400).json({ success: false, error: 'Content and role are required' });
         }
 
@@ -312,8 +334,11 @@ export const addMessageToChatSession = async (req: AuthenticatedRequest, res: Re
         );
 
         if (!session) {
+            logger.error(`addMessageToChatSession: Session not found for sessionId=${sessionId}, userId=${getUserId(req)}`);
             return res.status(404).json({ success: false, error: 'Chat session not found' });
         }
+
+        logger.info(`Added message to session ${sessionId} for user ${getUserId(req)}`);
 
         // Auto-generate title if this is the first user message
         if (role === 'user' && session.messages.length === 1 && session.title === 'New Chat') {
