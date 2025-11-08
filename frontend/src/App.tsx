@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ChatPage from './pages/ChatPage';
 import AuthPage from './pages/AuthPage';
+import NotFoundPage from './pages/NotFoundPage';
 import { AuthGuard } from './components/AuthGuard';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -29,6 +30,7 @@ function App() {
                                     <ChatPage />
                                 </AuthGuard>
                             } />
+                            <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                     </div>
                 </Router>
