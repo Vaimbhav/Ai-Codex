@@ -1,13 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft } from 'lucide-react';
 
 const NotFoundPage: React.FC = () => {
     const navigate = useNavigate();
-
-    const handleGoHome = () => {
-        navigate('/');
-    };
 
     const handleGoBack = () => {
         navigate(-1);
@@ -29,13 +25,13 @@ const NotFoundPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-4">
-                    <button
-                        onClick={handleGoHome}
-                        className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+                    <Link
+                        to="/"
+                        className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 no-underline"
                     >
                         <Home size={20} />
                         Go to Home Page
-                    </button>
+                    </Link>
 
                     <button
                         onClick={handleGoBack}
@@ -44,9 +40,7 @@ const NotFoundPage: React.FC = () => {
                         <ArrowLeft size={20} />
                         Go Back
                     </button>
-                </div>
-
-                <div className="mt-8 text-sm text-gray-500 dark:text-gray-400">
+                </div>                <div className="mt-8 text-sm text-gray-500 dark:text-gray-400">
                     <p>
                         If you think this is a mistake, please{' '}
                         <a
