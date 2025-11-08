@@ -1,16 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AuthForm } from '../components/AuthForm';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const AuthPage: React.FC = () => {
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+    const { isAuthenticated, user } = useAuth();
+
+    // Redirect authenticated users to home page
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            navigate('/', { replace: true });
+        }
+    }, [isAuthenticated, user, navigate]);
 
     const handleAuthSuccess = () => {
-        // Redirect to chat after successful authentication
-        const redirectTo = searchParams.get('redirect') || '/chat';
-        navigate(redirectTo);
+        // Redirect to home after successful authentication
+        // User can then navigate to chat from there
+        navigate('/');
     };
+
+    // Don't render the form if user is already authenticated
+    if (isAuthenticated && user) {
+        return null;
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
