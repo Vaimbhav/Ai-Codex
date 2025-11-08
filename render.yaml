@@ -1,5 +1,5 @@
 services:
-  - type: web
+  - type: static
     name: ai-code-assistant-frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
