@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ai-code-assistant-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
