@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
+const { body, validationResult } = require("express-validator");
+
 import { authService } from '../services/auth.service';
 import { AuthenticatedRequest } from '../middleware/auth';
 import { IUserPreferences } from '../models/User';
