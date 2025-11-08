@@ -84,7 +84,7 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public - commented out because Vite needs public folder tracked
 
 # Vite build outputs
 dist/
