@@ -65,7 +65,14 @@ const formatText = (text: string) => {
 };
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className = '' }) => {
+    const [copied, setCopied] = React.useState(false);
     const parts = parseMarkdown(content);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(content);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
+    };
 
     return (
         <div className={`prose prose-sm max-w-none dark:prose-invert ${className}`}>
@@ -90,6 +97,35 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, cla
                     );
                 }
             })}
+
+            {/* Copy icon at bottom like ChatGPT */}
+            <div className="flex justify-end mt-4 pt-2 border-t border-gray-200 dark:border-gray-700">
+                <button
+                    onClick={handleCopy}
+                    className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                    title="Copy response"
+                    aria-label="Copy response"
+                >
+                    {copied ? (
+                        <>
+                            {/* Checkmark icon when copied */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-green-600 dark:text-green-400">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span className="text-sm text-green-600 dark:text-green-400">Copied!</span>
+                        </>
+                    ) : (
+                        <>
+                            {/* Copy icon (like ChatGPT) */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <rect x="9" y="9" width="13" height="13" rx="2" strokeWidth="2" stroke="currentColor" fill="none" />
+                                <rect x="3" y="3" width="13" height="13" rx="2" strokeWidth="2" stroke="currentColor" fill="none" />
+                            </svg>
+                            <span className="text-sm">Copy</span>
+                        </>
+                    )}
+                </button>
+            </div>
         </div>
     );
 };

@@ -183,7 +183,15 @@ export const ChatLayout: React.FC<ChatLayoutProps> = () => {
     };
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // Only auto-scroll if user is near the bottom (within 100px)
+        const container = messagesEndRef.current?.parentElement;
+        if (container) {
+            const { scrollTop, scrollHeight, clientHeight } = container;
+            const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+            if (isNearBottom) {
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     }, [activeSession?.messages, streamingMessage, isStreaming]);
 
     // Auto-focus the textarea when component mounts and when session changes
